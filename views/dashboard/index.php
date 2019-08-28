@@ -7,7 +7,7 @@ Dashboard::headerTemplate('Iniciar sesión');
         <form method="post" id="form-sesion">
             <div class="input-field col s12 m6 offset-m3">
                 <i class="material-icons prefix">person_pin</i>
-                <input id="alias" type="text" name="alias" class="validate" required/>
+                <input id="alias" type="text" name="alias" class="validate" required autocomplete="off"/>
                 <label for="alias">Usuario</label>
             </div>
             <div class="input-field col s12 m6 offset-m3">

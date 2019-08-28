@@ -3,6 +3,9 @@ class Dashboard
 {
 	public static function headerTemplate($title)
 	{
+		require_once('../../core/helpers/database.php');
+		require_once('../../core/helpers/validator.php');
+		require_once('../../core/models/usuarios.php');
 		session_start();
 		ini_set('date.timezone', 'America/El_Salvador');
 		print('
@@ -21,6 +24,11 @@ class Dashboard
 		');
 		if (isset($_SESSION['idUsuario'])) {
 			$filename = basename($_SERVER['PHP_SELF']);
+			$crud = new Usuarios();
+			$atributo = $crud->getAtributos($_SESSION['idUsuario']);
+			$dato = $atributo['atributos'];
+
+			//echo $dato{0};
 			if ($filename != 'index.php') {
 				self::modals();
 				print('
@@ -30,11 +38,19 @@ class Dashboard
 								<div class="nav-wrapper">
 									<a href="main.php" class="brand-logo"><img src="../../resources/img/logo.png" height="60"></a>
 									<a href="#" data-target="mobile" class="sidenav-trigger"><i class="material-icons">menu</i></a>
-									<ul class="right hide-on-med-and-down">
-										<li><a href="productos.php" class="black-text text-darken-2 letra">Productos</a></li>
-										<li><a href="categorias.php" class="black-text text-darken-2 letra">Categorías</a></li>
-										<li><a href="usuarios.php" class="black-text text-darken-2 letra">Usuarios</a></li>
-										<li><a href="#" class="dropdown-trigger black-text text-darken-2 letra" data-target="dropdown"><i class="material-icons left">assignment_ind</i>Cuenta: <b>'.$_SESSION['aliasUsuario'].'</b></a></li>
+									<ul class="right hide-on-med-and-down">');
+										if ($dato{0} == 1) {
+											print('<li><a href="productos.php" class="black-text text-darken-2 letra">Productos</a></li>');
+										}
+										if ($dato{1} == 1) {
+											print('<li><a href="categorias.php" class="black-text text-darken-2 letra">Categorías</a></li>');
+										}
+										if ($dato{2} == 1) {
+											print('<li><a href="usuarios.php" class="black-text text-darken-2 letra">Usuarios</a></li>');
+										}
+										
+										
+				print('<li><a href="#" class="dropdown-trigger black-text text-darken-2 letra" data-target="dropdown"><i class="material-icons left">assignment_ind</i>Cuenta: <b>'.$_SESSION['aliasUsuario'].'</b></a></li>
 									</ul>
 									<ul id="dropdown" class="dropdown-content">
 										<li><a href="#" onclick="modalProfile()" class="pink-text"><i class="material-icons ">face</i>Editar perfil</a></li>
@@ -44,11 +60,20 @@ class Dashboard
 								</div>
 							</nav>
 						</div>
-						<ul class="sidenav" id="mobile">
-							<li><a href="productos.php"><i class="material-icons">shop</i>Productos</a></li>
-							<li><a href="categorias.php"><i class="material-icons">shop_two</i>Categorías</a></li>
-							<li><a href="usuarios.php"><i class="material-icons">group</i>Usuarios</a></li>
-							<li><a class="dropdown-trigger" href="#" data-target="dropdown-mobile"><i class="material-icons">verified_user</i>Cuenta: <b>'.$_SESSION['aliasUsuario'].'</b></a></li>
+						<ul class="sidenav" id="mobile">');
+						if ($dato{0} == 1) {
+							print('<li><a href="productos.php"><i class="material-icons">shop</i>Productos</a></li>');
+						}
+						if ($dato{1} == 1) {
+							print('<li><a href="categorias.php"><i class="material-icons">shop_two</i>Categorías</a></li>');
+						}
+						if ($dato{2} == 1) {
+							print('<li><a href="usuarios.php"><i class="material-icons">group</i>Usuarios</a></li>');
+						}
+							
+							
+							
+							print('<li><a class="dropdown-trigger" href="#" data-target="dropdown-mobile"><i class="material-icons">verified_user</i>Cuenta: <b>'.$_SESSION['aliasUsuario'].'</b></a></li>
 						</ul>
 						<ul id="dropdown-mobile" class="dropdown-content">
 							<li><a href="#" onclick="modalProfile()">Editar perfil</a></li>

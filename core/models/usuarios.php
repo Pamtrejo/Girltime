@@ -8,6 +8,7 @@ class Usuarios extends Validator
 	private $correo = null;
 	private $alias = null;
 	private $clave = null;
+	private $vencimiento = null;
 
 	//Métodos para sobrecarga de propiedades
 	public function setId($value)
@@ -103,11 +104,17 @@ class Usuarios extends Validator
 	//Métodos para manejar la sesión del usuario
 	public function checkAlias()
 	{
-		$sql = 'SELECT id_usuario FROM usuarios WHERE alias_usuario = ?';
+		$sql = 'SELECT id_usuario, FechaVencimiento FROM usuarios WHERE alias_usuario = ?';
 		$params = array($this->alias);
 		$data = Database::getRow($sql, $params);
 		if ($data) {
 			$this->id = $data['id_usuario'];
+			$diferencia = date('Y-m-d H:i:s') - $data['FechaVencimiento'];
+			if ($diferencia > 90) {
+				$this->vencimiento = true;
+			} else {
+				$this->vencimiento = false;
+			}
 			return true;
 		} else {
 			return false;
@@ -148,6 +155,12 @@ class Usuarios extends Validator
 		$params = array("%$value%", "%$value%");
 		return Database::getRows($sql, $params);
 	}
+	public function getAtributos($id)
+	{
+		$sql = 'SELECT atributos FROM roles inner join usuarios USING(IdRole) where id_usuario = ? limit 0,1';
+		$params = array($id);
+		return Database::getRow($sql, $params);
+	}
 
 	public function createUsuario()
 	{
@@ -178,5 +191,9 @@ class Usuarios extends Validator
 		return Database::executeRow($sql, $params);
 	}
 	
+	public function getVencimiento()
+	{
+		return $this->vencimiento;
+	}
 }
 ?>

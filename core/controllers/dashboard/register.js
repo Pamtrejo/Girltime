@@ -19,7 +19,7 @@ function checkUsuarios()
         //Se verifica si la respuesta de la API es una cadena JSON, sino se muestra el resultado en consola
         if (isJSONString(response)) {
             const dataset = JSON.parse(response);
-            //Se comprueba si hay usuarios registrados para redireccionar al inicio de sesión
+            //Se comprueba si hay usuarios registrados para redireccionar al inicio de sesión/
             if (dataset.status == 1) {
                 sweetAlert(3, dataset.exception, 'index.php');
             }

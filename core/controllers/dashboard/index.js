@@ -51,7 +51,11 @@ $('#form-sesion').submit(function()
             if (dataset.status) {
                 sweetAlert(1, 'Autenticación correcta', 'main.php');
             } else {
-                sweetAlert(2, dataset.exception, null);
+                if (dataset.cuenta) {
+                    sweetAlert(2, dataset.exception, 'contrasena.php');
+                } else {
+                    sweetAlert(2, dataset.exception, null);
+                }
             }
         } else {
             console.log(response);
@@ -61,4 +65,6 @@ $('#form-sesion').submit(function()
         //Se muestran en consola los posibles errores de la solicitud AJAX
         console.log('Error: ' + jqXHR.status + ' ' + jqXHR.statusText);
     });
+
+    
 })

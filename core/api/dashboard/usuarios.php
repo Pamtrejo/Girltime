@@ -1,12 +1,15 @@
 <?php
 require_once('../../core/helpers/database.php');
 require_once('../../core/helpers/validator.php');
+require_once('../../core/helpers/seguridad.php');
+
 require_once('../../core/models/usuarios.php');
 
 //Se comprueba si existe una petición del sitio web y la acción a realizar, de lo contrario se muestra una página de error
 if (isset($_GET['site']) && isset($_GET['action'])) {
     session_start();
     $usuario = new Usuarios;
+    $seguridad = new Seguridad;
     $result = array('status' => 0, 'exception' => '');
     //Se verifica si existe una sesión iniciada como administrador para realizar las operaciones correspondientes
     if (isset($_SESSION['idUsuario']) && $_GET['site'] == 'dashboard') {
@@ -257,16 +260,21 @@ if (isset($_GET['site']) && isset($_GET['action'])) {
                 $_POST = $usuario->validateForm($_POST);
                 if ($usuario->setAlias($_POST['alias'])) {
                     if ($usuario->checkAlias()) {
-                        if ($usuario->setClave($_POST['clave'])) {
-                            if ($usuario->checkPassword()) {
-                                $_SESSION['idUsuario'] = $usuario->getId();
-                                $_SESSION['aliasUsuario'] = $usuario->getAlias();
-                                $result['status'] = 1;
+                        if ($usuario->getVencimiento()) {
+                            if ($usuario->setClave($_POST['clave'])) {
+                                if ($usuario->checkPassword()) {
+                                    $_SESSION['idUsuario'] = $usuario->getId();
+                                    $_SESSION['aliasUsuario'] = $usuario->getAlias();
+                                    $result['status'] = 1;
+                                } else {
+                                    $result['exception'] = 'Clave inexistente';
+                                }
                             } else {
-                                $result['exception'] = 'Clave inexistente';
+                                $result['exception'] = 'Clave menor a 6 caracteres';
                             }
                         } else {
-                            $result['exception'] = 'Clave menor a 6 caracteres';
+                            $result['cuenta'] = 1;
+                            $result['exception'] = 'Su clave ha expirado';
                         }
                     } else {
                         $result['exception'] = 'Alias inexistente';

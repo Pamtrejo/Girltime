@@ -18,6 +18,7 @@ function fillTable(rows)
                 <td>${row.nombres_usuario}</td>
                 <td>${row.correo_usuario}</td>
                 <td>${row.alias_usuario}</td>
+                <td>${row.id_rol}</td>
                 <td>
                     <a href="#" onclick="modalUpdate(${row.id_usuario})" class="pink-text tooltipped" data-tooltip="Modificar"><i class="material-icons">mode_edit</i></a>
                     <a href="#" onclick="confirmDelete(${row.id_usuario})" class="black-text tooltipped" data-tooltip="Eliminar"><i class="material-icons">delete</i></a>

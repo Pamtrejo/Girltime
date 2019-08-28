@@ -3,7 +3,7 @@ class Seguridad
 {
 	
 	
-	public function ValidarUsuarioVista($nombreVista)
+	public function validarUsuarioVista($nombreVista)
 	{
 		$retorno=0;
 		session_start();
@@ -18,21 +18,5 @@ class Seguridad
 		}
 		return $retorno;
 	}
-	public function ValidarVencimiento()
-	{
-		$retorno=0;
-		session_start();
-		$Roles=roles;
-		if (isset($_SESSION['idUsuario'])) {
-			$usuario=$_SESSION['idUsuario'];
-			$Roles->setUsuario($usuario);
-			$cadena=$Roles->ValidarVencimiento();
-			if($cadena[0]<=0){
-				$retorno=1;
-			}
-		}
-		return $retorno;
-	}
 	
-}
 ?>

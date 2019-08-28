@@ -27,6 +27,7 @@ Dashboard::headerTemplate('Administrar usuarios');
             <th>NOMBRES</th>
             <th>CORREO</th>
             <th>ALIAS</th>
+            <th>ROL</th>
             <th>ACCIÓN</th>
         </tr>
     </thead>
